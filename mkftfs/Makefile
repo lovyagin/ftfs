@@ -2,8 +2,16 @@ CC=gcc
 TARGET=mkftfs
 PREFIX = /usr/local
 
-CFLAGS=-c `pkg-config fuse --cflags` -I$(PREFIX)/include -fPIC -Wall -Wextra -g
-LDFLAGS= -I$(PREFIX)/lib -lsqlite3 -lftfs -g
+CFLAGS=-c `pkg-config fuse --cflags` -I$(PREFIX)/include -fPIC -Wall -Wextra
+LDFLAGS= -I$(PREFIX)/lib -lsqlite3 -lftfs 
+
+DEBUG ?= 1
+ifeq ($(DEBUG), 1)
+    CFLAGS+=-g
+    LDFLAGS+=-g
+else
+    CFLAGS+=-DNDEBUG -O2
+endif
 
 
 .PHONY: all clean install uninstall
@@ -26,3 +34,9 @@ install: all
 
 uninstall:
 	rm -rf $(PREFIX)/bin/$(TARGET)
+
+remake: clean all
+	
+
+reinstall: clean install
+	

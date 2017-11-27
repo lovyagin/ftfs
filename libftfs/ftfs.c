@@ -250,7 +250,7 @@ int ft_check_inh_prm (ft_state *state, ft_path *path, const ft_prc *prc, uint64_
 
     if ((r = ft_check_entry_prm(state, oldpath, prc, prm)) == -1) return 0;
 
-    while (go_dprm && go_fprm && ft_parent(oldpath, curpath))
+    while ((go_dprm || go_fprm) && ft_parent(oldpath, curpath))
     {
         if (!go_fprm) prm &= ~FT_PRM_FILE;
         if (!go_dprm) prm &= ~FT_PRM_DIRS;
@@ -263,23 +263,6 @@ int ft_check_inh_prm (ft_state *state, ft_path *path, const ft_prc *prc, uint64_
 
         swappath(&oldpath, &curpath);
     }
-
-
-    do
-    {
-        if (!go_fprm) prm &= ~FT_PRM_FILE;
-        if (!go_dprm) prm &= ~FT_PRM_DIRS;
-
-        if ((q = ft_check_entry_prm(state, oldpath, prc, prm)) == -1) return 0;
-        r = r || q;
-
-        if (!ft_parent(oldpath, curpath)) break;
-
-        go_dprm = go_dprm && ft_check_inh (state, curpath, FT_INH_INH);
-        go_fprm = go_fprm && ft_check_inh (state, curpath, FT_INH_IFP);
-
-        swappath(&oldpath, &curpath);
-    } while (go_dprm && go_fprm);
 
     return r;
 }
@@ -308,7 +291,7 @@ int ft_check_inh_prms (ft_state *state, ft_path *path, const ft_prc *prc)
 
     ft_get_entry_ad(state, oldpath, prc, &allow, &deny);
 
-    while (go_dprm && go_fprm && ft_parent(oldpath, curpath))
+    while ((go_dprm || go_fprm) && ft_parent(oldpath, curpath))
     {
         uint64_t a, d;
         ft_get_entry_ad(state, curpath, prc, &a, &d);
@@ -340,6 +323,8 @@ int ft_check_dex (ft_state *state, ft_path *path, const ft_prc *prc)
             *oldpath = &path1, *curpath = &path2;
 
     if (!ft_exists(state, path)) return 0;
+
+    if (prc->uid == 0 || prc->uid == state->uid) return 1;
 
     if (!ft_str_cpy(ft_get_path(curpath), FT_PATH, FT_LIMIT_PATH)) return 0;
 
@@ -833,11 +818,11 @@ int ft_set_mkdir_prm (ft_state *state, ft_path *path)
 
     if ((rc = ft_get_inh(state, &parent, &pinh))) return rc;
 
-    if (pinh & FT_INH_SPI) inh |= FT_INH_INH;
-    if (pinh & FT_INH_SPS) inh |= FT_INH_SET;
+    if (pinh & FT_INH_SPI) inh |= FT_INH_INH | FT_INH_SPI;
+    if (pinh & FT_INH_SPS) inh |= FT_INH_SET | FT_INH_SPS;
 
-    if (pinh & FT_INH_SFP) inh |= FT_INH_IFP;
-    if (pinh & FT_INH_SFS) inh |= FT_INH_IFS;
+    if (pinh & FT_INH_SFP) inh |= FT_INH_IFP | FT_INH_SFP;
+    if (pinh & FT_INH_SFS) inh |= FT_INH_IFS | FT_INH_SFS;
 
     if ((rc = ft_set_inh(state, path, inh))) return rc;
 

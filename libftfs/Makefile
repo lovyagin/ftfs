@@ -1,6 +1,15 @@
 CC=gcc
-CFLAGS=-c `pkg-config fuse --cflags` -fPIC -Wall -Wextra -g
-LDFLAGS= -lsqlite3 -shared -g
+CFLAGS=-c `pkg-config fuse --cflags` -fPIC -Wall -Wextra
+LDFLAGS= -lsqlite3 -shared
+
+DEBUG ?= 1
+ifeq ($(DEBUG), 1)
+    CFLAGS+=-g
+    LDFLAGS+=-g
+else
+    CFLAGS+=-DNDEBUG -O2
+endif
+
 
 TARGET=libftfs.so
 PREFIX = /usr/local
@@ -44,3 +53,9 @@ install: all
 uninstall:
 	rm -rf $(PREFIX)/lib/$(TARGET)
 	rm -rf $(PREFIX)/include/ftfs.h
+
+remake: clean all
+	
+
+reinstall: clean install
+	

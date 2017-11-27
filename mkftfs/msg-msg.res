@@ -10,6 +10,7 @@
 "Create FTFS filesystem\n"
     "usage: %s type hostdir\n"
     "\thostdir\t\treal filesystem directory to store files in\n"
-    "\tdb (default)\tstore permissions in database\n"
-    "\txattr\t\tstore permissions in safe (ASCII) extended attributes\n"
-    "\tfxattr\t\tstore permissions in fast (binary) extended attributes",      /* FTMK_MSG_HELP      */
+    "\ttype:\n"
+    "\t\tdb (default)\tstore permissions in database\n"
+    "\t\txattr\t\tstore permissions in safe (ASCII) extended attributes\n"
+    "\t\tfxattr\t\tstore permissions in fast (binary) extended attributes",    /* FTMK_MSG_HELP      */

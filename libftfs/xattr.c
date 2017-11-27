@@ -123,9 +123,17 @@ int xattr_get_int (ft_state *state, ft_path *path, const char *name, uint64_t *a
      char value[17];
 
      if ((rc = xattr_get(state, path, name, value, 16, &rs))) return rc;
-     if (rs != 16)                                            return FT_ERR_XATTROPEN;
+
+     if (rs == 0)
+     {
+         *attr = 0;
+         return FT_OK;
+     }
+
+     if (rs != 16) return FT_ERR_XATTROPEN;
+
      value[16] = '\0';
-     if (hex_to_int(value, attr))                             return FT_ERR_XATTRFMT;
+     if (hex_to_int(value, attr)) return FT_ERR_XATTRFMT;
 
      return FT_OK;
 
@@ -563,9 +571,9 @@ int xattr_get_prm (ft_state *state, ft_path *path, ft_prm *prm)
 
     if (s)
     {
-        value[33] = '\0';
-        hex_to_int(value + 17, &(prm->deny ));
-        value[17] = '\0';
+        value[32] = '\0';
+        hex_to_int(value + 16, &(prm->deny ));
+        value[16] = '\0';
         hex_to_int(value     , &(prm->allow));
     }
     else

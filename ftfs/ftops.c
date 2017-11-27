@@ -121,12 +121,14 @@ int ftfs_chown (const char *rpath, uid_t uid, gid_t gid);
                                                  \
     if (ft_add (state, path, uid, gid))          \
     {                                            \
+printf("1\n");\
         if (!source) rmf (hostpath);             \
         return -EACCES;                          \
     }                                            \
                                                  \
     if (ft_set_##addf##_prm (state, path))       \
     {                                            \
+printf("2\n");\
         if (!source) rmf (hostpath);             \
         ft_delete (state, path);                 \
         return -EACCES;                          \
