@@ -40,10 +40,9 @@ int ftpc_type (ft_state *state, ft_prc *prc, int argc, char *argv[])
 int ftpc_str_to_int (const char *str, unsigned long *value)
 {
     char *end;
-    if (str || !*str) return 0;
+    if (!str || !*str) return 0;
     *value = strtoul (str, &end, 10);
-
-    return *end ? 1 : 0;
+    return *end ? 0 : 1;
 }
 
 int ftpc_mk_path (const char *source, char *buffer, ft_path *path)
