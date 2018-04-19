@@ -9,9 +9,9 @@ CLEANFILES	= $(PROGRAMS)
 
 MAINTAINERCLEANFILES	= Makefile.in
 
-ftpc_LDADD	= $(AM_LIBS) $(SQLITE3_MODULE_LIBS) $(FUSE_MODULE_LIBS) $(top_builddir)/libftfs/libftfs.la
-ftpc_CFLAGS	= $(AM_CFLAGS) $(FUSE_CFLAGS) $(SQLITE3_CFLAGS) -I$(top_srcdir)/include/ $(all_includes)
-ftpc_SOURCES	= main.c
+mkftfs_LDADD	= $(AM_LIBS) $(SQLITE3_MODULE_LIBS) $(FUSE_MODULE_LIBS) $(top_builddir)/libftfs/libftfs.la
+mkftfs_CFLAGS	= $(AM_CFLAGS) $(FUSE_CFLAGS) $(SQLITE3_CFLAGS) -I$(top_srcdir)/include/ $(all_includes)
+mkftfs_SOURCES	= main.c
 
 #strip:	$(bin_PROGRAMS) $(sbin_PROGRAMS)
 #	$(STRIP) $^

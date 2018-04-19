@@ -104,13 +104,20 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-mkftfs_SOURCES = mkftfs.c
-mkftfs_OBJECTS = mkftfs.$(OBJEXT)
-mkftfs_LDADD = $(LDADD)
+am__mkftfs_SOURCES_DIST = main.c
+@ENABLE_FTFSPROGS_TRUE@am_mkftfs_OBJECTS = mkftfs-main.$(OBJEXT)
+mkftfs_OBJECTS = $(am_mkftfs_OBJECTS)
+am__DEPENDENCIES_1 =
+@ENABLE_FTFSPROGS_TRUE@mkftfs_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+@ENABLE_FTFSPROGS_TRUE@	$(am__DEPENDENCIES_1) \
+@ENABLE_FTFSPROGS_TRUE@	$(top_builddir)/libftfs/libftfs.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+mkftfs_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(mkftfs_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -145,8 +152,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = mkftfs.c
-DIST_SOURCES = mkftfs.c
+SOURCES = $(mkftfs_SOURCES)
+DIST_SOURCES = $(am__mkftfs_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -312,9 +319,9 @@ top_srcdir = @top_srcdir@
 @ENABLE_FTFSPROGS_TRUE@LIBTOOL_LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 @ENABLE_FTFSPROGS_TRUE@CLEANFILES = $(PROGRAMS)
 @ENABLE_FTFSPROGS_TRUE@MAINTAINERCLEANFILES = Makefile.in
-@ENABLE_FTFSPROGS_TRUE@ftpc_LDADD = $(AM_LIBS) $(SQLITE3_MODULE_LIBS) $(FUSE_MODULE_LIBS) $(top_builddir)/libftfs/libftfs.la
-@ENABLE_FTFSPROGS_TRUE@ftpc_CFLAGS = $(AM_CFLAGS) $(FUSE_CFLAGS) $(SQLITE3_CFLAGS) -I$(top_srcdir)/include/ $(all_includes)
-@ENABLE_FTFSPROGS_TRUE@ftpc_SOURCES = main.c
+@ENABLE_FTFSPROGS_TRUE@mkftfs_LDADD = $(AM_LIBS) $(SQLITE3_MODULE_LIBS) $(FUSE_MODULE_LIBS) $(top_builddir)/libftfs/libftfs.la
+@ENABLE_FTFSPROGS_TRUE@mkftfs_CFLAGS = $(AM_CFLAGS) $(FUSE_CFLAGS) $(SQLITE3_CFLAGS) -I$(top_srcdir)/include/ $(all_includes)
+@ENABLE_FTFSPROGS_TRUE@mkftfs_SOURCES = main.c
 all: all-am
 
 .SUFFIXES:
@@ -400,7 +407,7 @@ clean-binPROGRAMS:
 
 mkftfs$(EXEEXT): $(mkftfs_OBJECTS) $(mkftfs_DEPENDENCIES) $(EXTRA_mkftfs_DEPENDENCIES) 
 	@rm -f mkftfs$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(mkftfs_OBJECTS) $(mkftfs_LDADD) $(LIBS)
+	$(AM_V_CCLD)$(mkftfs_LINK) $(mkftfs_OBJECTS) $(mkftfs_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -408,7 +415,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mkftfs.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mkftfs-main.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -430,6 +437,20 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
+
+mkftfs-main.o: main.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mkftfs_CFLAGS) $(CFLAGS) -MT mkftfs-main.o -MD -MP -MF $(DEPDIR)/mkftfs-main.Tpo -c -o mkftfs-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/mkftfs-main.Tpo $(DEPDIR)/mkftfs-main.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main.c' object='mkftfs-main.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mkftfs_CFLAGS) $(CFLAGS) -c -o mkftfs-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+
+mkftfs-main.obj: main.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mkftfs_CFLAGS) $(CFLAGS) -MT mkftfs-main.obj -MD -MP -MF $(DEPDIR)/mkftfs-main.Tpo -c -o mkftfs-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/mkftfs-main.Tpo $(DEPDIR)/mkftfs-main.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main.c' object='mkftfs-main.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(mkftfs_CFLAGS) $(CFLAGS) -c -o mkftfs-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
