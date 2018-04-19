@@ -258,7 +258,7 @@ typedef struct
 {
     uid_t uid;
     gid_t gid;
-    char  *cmd;
+    char *cmd;
     gid_t groups[FT_LIMIT_GROUPS];
     int   ngroups;
 } ft_prc;
@@ -528,7 +528,7 @@ void ft_put_msg (size_t idx, ...);
 /**
 * @brief      print program and library version
 */
-void ft_msg_version ();
+void ft_msg_version (void);
 
 
 //}
@@ -741,7 +741,7 @@ int ft_str_cat2 (char *dest, const char *s1, const char *s2, size_t size);
 * @brief      initialize empty ft_prms array
 * @return     empty ft_prms array
 */
-ft_prms ft_prms_init ();
+ft_prms ft_prms_init (void);
 
 /**
 * @brief         add element to the end of ft_prms array
@@ -788,7 +788,7 @@ void ft_prms_free (ft_prms *prms);
 * @brief      create prms array in error state
 * @return     prms array in error state
 */
-ft_prms ft_prms_error ();
+ft_prms ft_prms_error (void);
 
 /**
 * @brief      check if prms array is in error state

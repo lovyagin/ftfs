@@ -17,7 +17,7 @@
 // nopar
 int ftpc_type (ft_state *state, ft_prc *prc, int argc, char *argv[])
 {
-    char *type;
+    const char *type;
     (void) argv;
     if (argc > 0) return FTPC_MSG_USAGE;
 

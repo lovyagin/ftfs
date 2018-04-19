@@ -9,7 +9,21 @@
   Copyright (C) 2012 Joseph J. Pfeiffer, Jr., Ph.D. <pfeiffer@cs.nmsu.edu>
 */
 
-#include "fusecfg.h"
+#define FUSE_USE_VERSION 26
+
+#include <limits.h>
+#include <memory.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <string.h>
+#include <sys/statvfs.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/xattr.h>
+#include <unistd.h>
+#include <utime.h>
+#include <fuse.h>
 #include <ftfs.h>
 
 int ftfs_getattr     (const char *, struct stat *);

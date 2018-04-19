@@ -155,7 +155,8 @@ int xattr_set_int (ft_state *state, ft_path *path, const char *name, uint64_t at
 int xattr_set_string (ft_state *state, ft_path *path, const char *name, const char *str)
 {
     size_t s = 2 * strlen(str);
-    void *value = malloc (s), *o = value;
+    void *value = malloc (s);
+    char *o = value;
     const char *i;
     int rc;
 
@@ -177,7 +178,7 @@ int xattr_set_string (ft_state *state, ft_path *path, const char *name, const ch
 int xattr_get_string (ft_state *state, ft_path *path, const char *name, char *str, size_t bs)
 {
     size_t s = 2 * (bs - 1);
-    void *value = malloc (s), *i = value, *e;
+    char *value = malloc (s), *i = value, *e;
     char buffer[3], *o = str;
     int rc, v;
     ssize_t rs;

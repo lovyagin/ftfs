@@ -8,8 +8,8 @@
   This code is based on bbfs fuse-tutorial code
   Copyright (C) 2012 Joseph J. Pfeiffer, Jr., Ph.D. <pfeiffer@cs.nmsu.edu>
 */
+#include "ftops.h"
 #include <ftfs.h>
-#include "fusecfg.h"
 #include <stdio.h>
 #include <errno.h>
 #include <dirent.h>
@@ -20,7 +20,7 @@
     int rc;                                                                        \
     ft_prc ftprc, *prc = &ftprc;                                                   \
     ft_state *state = ((ft_state *) fuse_get_context()->private_data);             \
-    ft_path ftpath = ft_path_init((char *) rpath), *path = &ftpath;                \
+    ft_path ftpath = ft_path_init((char *)rpath), *path = &ftpath;                 \
     char pex [FT_LIMIT_PATH];                                                      \
     char *hostpath;                                                                \
     (void) hostpath;                                                               \
@@ -33,17 +33,31 @@
     if (state->check_prexec)                                                       \
     {                                                                              \
         char exe [FT_LIMIT_PATH];                                                  \
-        ssize_t rc;                                                                \
+        ssize_t rs;                                                                \
         snprintf (exe, FT_LIMIT_PATH, "/proc/%u/exe", fuse_get_context()->pid);    \
-        if ((rc = readlink(exe, pex, FT_LIMIT_PATH) > 0) && rc < FT_LIMIT_PATH -1) \
+        if ((rs = readlink(exe, pex, FT_LIMIT_PATH)) > 0 && rs < FT_LIMIT_PATH -1) \
         {                                                                          \
-            pex[rc] = '\0';                                                        \
+            pex[rs] = '\0';                                                        \
             ftprc.cmd = pex;                                                       \
         }                                                                          \
+        FT_DEBUG_REQUEST                                                           \
     }                                                                              \
-                                                                                   \
     ftprc.ngroups = fuse_getgroups(FT_LIMIT_GROUPS, ftprc.groups);                 \
     if (ftprc.ngroups < 0 || ftprc.ngroups > FT_LIMIT_GROUPS) ftprc.ngroups = 0;
+
+#ifndef NDEBUG                                                                     
+#define FT_DEBUG_REQUEST                                                           \
+    printf("REQUEST FROM: uid=%u, gid=%u cmd='%s' exe='%s' rs=%i\n",               \
+                (unsigned) ftprc.uid,                                              \
+                (unsigned) ftprc.gid,                                              \
+                ftprc.cmd,                                                         \
+                exe,                                                               \
+                rs                                                                 \
+          );                                                                       
+#else
+#define FT_DEBUG_REQUEST
+#endif                                                                             
+
 
 #define FTFS_INIT_PARENT                                                           \
     char pbuffer[FT_LIMIT_PATH];                                                   \
@@ -93,7 +107,6 @@ int ftfs_readlink (const char *rpath, char *buffer, size_t s)
 }
 
 
-int ftfs_chown (const char *rpath, uid_t uid, gid_t gid);
 #define CHECK_OWN(mk,ad)                   \
     if      (pprm & FT_PRM_D##mk) own = 1; \
     else if (pprm & FT_PRM_D##ad) own = 0; \
@@ -799,7 +812,8 @@ int ftfs_opendir (const char *rpath, struct fuse_file_info *fi)
     FTFS_EXISTS
     FTFS_PRM(DRD)
     FTFS_HOSTPATH
-    FTFS_FAILCALL ((intptr_t) opendir(hostpath));
+    rc = (intptr_t) opendir(hostpath);
+    if (!rc) return -errno;
     fi->fh = rc;
     return 0;
 }

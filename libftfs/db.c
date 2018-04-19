@@ -525,6 +525,7 @@ ft_prms db_get_prms (ft_state *state, ft_path *path)
         prm.prc.cmd = (char *) sqlite3_column_text (stmt, 3);
 
         ft_prms_push (&r, &prm);
+        
         if (ft_prms_is_error(&r))
         {
             sqlite3_finalize(stmt);

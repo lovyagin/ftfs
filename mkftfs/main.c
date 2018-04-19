@@ -29,7 +29,8 @@ int main(int argc, char *argv[] )
     ft_type t;
     int rc;
     ft_state *state;
-    ft_path path = ft_path_init("/");
+    char rootpath[] = "/";
+    ft_path path = ft_path_init(rootpath);
     uid_t uid;
     gid_t gid;
 

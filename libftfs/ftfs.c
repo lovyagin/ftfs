@@ -154,7 +154,7 @@ int ft_check_entry_prm (ft_state *state, ft_path *path, const ft_prc *prc, uint6
         FT_CPC
     }
 
-    if (state->check_prexec && p.prc.cmd != NULL)
+    if (state->check_prexec && prc->cmd != NULL)
     {
         p.cat = FT_CAT_PEX; p.prc.cmd = prc->cmd; FT_CPC
     }
@@ -208,7 +208,7 @@ void ft_get_entry_ad (ft_state *state, ft_path *path, const ft_prc *prc, uint64_
         FT_APC
     }
 
-    if (state->check_prexec && p.prc.cmd != NULL)
+    if (state->check_prexec && prc->cmd != NULL)
     {
         p.cat = FT_CAT_PEX; p.prc.cmd = prc->cmd; FT_APC
     }
