@@ -13909,6 +13909,8 @@ else
 	CFLAGS="${CFLAGS} -DNDEBUG"
 fi
 
+CFLAGS="${CFLAGS} -D_FILE_OFFSET_BITS=64"
+
 # Settings
 pkgconfigdir="\$(libdir)/pkgconfig"
 ftfsincludedir="\$(includedir)"

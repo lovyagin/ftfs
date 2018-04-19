@@ -131,7 +131,6 @@ PKG_CHECK_MODULES(
 	]
 )
 FUSE_MODULE_LIBS=`$PKG_CONFIG --libs fuse`
-CFLAGS="${CFLAGS} -D_FILE_OFFSET_BITS=64"
 
 # Sqlite 
 PKG_CHECK_MODULES(
@@ -191,6 +190,8 @@ if test "${enable_debug}" = "yes"; then
 else	
 	CFLAGS="${CFLAGS} -DNDEBUG"
 fi
+
+CFLAGS="${CFLAGS} -D_FILE_OFFSET_BITS=64"
 
 # Settings
 pkgconfigdir="\$(libdir)/pkgconfig"
