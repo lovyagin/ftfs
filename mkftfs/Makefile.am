@@ -3,7 +3,7 @@ if ENABLE_FTFSPROGS
 AM_LFLAGS	= $(all_libraries)
 LIBTOOL_LINK	= $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 
-bin_PROGRAMS	= ftpc
+bin_PROGRAMS	= mkftfs
 
 CLEANFILES	= $(PROGRAMS)
 
